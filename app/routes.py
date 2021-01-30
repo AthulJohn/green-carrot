@@ -34,6 +34,7 @@ def token_required(f):
     return decorated
 
 
+#user registration
 @app.route('/api/register', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -69,6 +70,9 @@ def create_user():
     token = jwt.encode({'user_id': user.user_id}, app.config.get('SECRET_KEY'), algorithm="HS256")
     return jsonify({"message": "user created!", "user": output, "token":token})
 
+
+
+#to get details of all users - Only if the current user is admin 
 @app.route('/api/user')
 @token_required
 def get_all_users(current_user):
@@ -93,6 +97,7 @@ def get_all_users(current_user):
     return jsonify({"users":output})
 
 
+#to get details of a user
 @app.route('/api/user/<user_id>')
 @token_required
 def get_one_user(current_user, user_id):
@@ -109,6 +114,8 @@ def get_one_user(current_user, user_id):
     }
     return jsonify({"user": output})
 
+
+#user login
 @app.route('/api/login')
 def login():
     auth = request.authorization
@@ -128,6 +135,7 @@ def login():
     return make_response("could not verify", 401, {'WWW-Authenticate': 'Basic realm="login required!"'})
 
 
+#user deletion
 @app.route('/api/user/<user_id>', methods=['DELETE'])
 @token_required
 def delete_user(current_user, user_id):
@@ -153,7 +161,7 @@ def delete_user(current_user, user_id):
 
     return jsonify({"error": "cannot perform that function!"}), 403
 
-
+#shopping list
 @app.route('/api/user/shoppinglist')
 @token_required
 def get_shopping_list(current_user):
@@ -166,4 +174,56 @@ def get_shopping_list(current_user):
     return jsonify({"class": res})
 
 
+#user rating
+@app.route('/api/user/rating', methods=['POST'])
+@token_required
+def set_rating(current_user):
+    args = request.get_json()
+    required = ['quality', 'brand', 'price', 'offers']
+
+    for r in required:
+        if not args.get(r):
+            return jsonify({"error": f"missing argument [{r}]"})
+
+    try:
+        rating = Rating(quality=args['quality'], brand=args['brand'], price=args['price'], offers=args['offers'])
+        current_user.ratings = rating
+        db.session.add(rating)
+        db.session.commit()
+
+    except AssertionError as e:
+        msg = str(e).split(":")[1]
+        return jsonify({"error": msg})
+    except Exception as e:
+        return jsonify({"error": "invalid data"})
+
+    output = {
+        'quality': rating.quality,
+        'brand': rating.brand,
+        'price': rating.price,
+        'offers': rating.offers
+    }
+
+    return jsonify({"message": "rating added!", "output": output})
+
+
+
+#to promote a user as admin
+@app.route('/api/user/promote/<user_id>', methods=['PUT'])
+@token_required
+def promote_user(current_user, user_id):
+    user = User.query.filter_by(user_id=user_id).first()
+    if not user:
+        return jsonify({"error": "user not found!"}), 404
+
+    user.admin = True
+    db.session.commit()
+    output = {
+        'username': user.username,
+        'user_id': user.user_id,
+        'name': user.name,
+        'email': user.email,
+        'admin': user.admin
+    }
+    return jsonify({"message": "user promoted", "user": output})
 
