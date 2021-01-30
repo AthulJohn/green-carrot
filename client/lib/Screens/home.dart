@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 //packages
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_page_indicator/flutter_page_indicator.dart';
+
+//other files
 import 'package:markus/Components/homeScreenItem.dart';
 import 'package:markus/Components/offerItem.dart';
 import 'package:markus/Components/sliverAppBar.dart';
+import 'package:markus/Objects/itemclass.dart';
+import 'package:markus/Screens/search.dart';
 import 'package:markus/items.dart';
+import 'package:markus/values.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -35,8 +40,8 @@ class _HomePageState extends State<HomePage> {
       body: navval == 0
           ? MainScreen()
           : navval == 1
-              ? MainScreen()
-              : MainScreen(),
+              ? SearchScreen()
+              : SearchScreen(),
     );
   }
 }

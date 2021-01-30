@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:markus/Screens/home.dart';
+import 'package:markus/Screens/itemDetails.dart';
+import 'package:markus/Screens/login.dart';
+import 'package:markus/Screens/menu.dart';
+import 'package:markus/Screens/settings.dart';
+import 'package:markus/Screens/signin.dart';
 
 void main() {
   runApp(MyApp());
