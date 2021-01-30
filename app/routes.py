@@ -154,5 +154,16 @@ def delete_user(current_user, user_id):
     return jsonify({"error": "cannot perform that function!"}), 403
 
 
+@app.route('/api/user/shoppinglist')
+@token_required
+def get_shopping_list(current_user):
+    quality = current_user.ratings.quality
+    brand = current_user.ratings.brand
+    price = current_user.ratings.price
+    offers = current_user.ratings.offers
+    
+    res = predictor(quality, brand, price, offers)
+    return jsonify({"class": res})
+
 
 
