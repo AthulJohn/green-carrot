@@ -128,6 +128,31 @@ def login():
     return make_response("could not verify", 401, {'WWW-Authenticate': 'Basic realm="login required!"'})
 
 
+@app.route('/api/user/<user_id>', methods=['DELETE'])
+@token_required
+def delete_user(current_user, user_id):
+    user = User.query.filter_by(user_id=user_id).first()
+
+    if current_user==user:
+        if not user:
+            return jsonify({"error": "user not found!"}), 404
+
+        try:
+            db.session.delete(user)
+            db.session.commit()
+        except Exception:
+            return jsonify({"error": "Internal Server Error"}), 500
+
+        output = {
+            'username': user.username,
+            'user_id': user.user_id,
+            'name': user.name,
+            'email': user.email
+        }
+        return jsonify({"message": "user deleted", "user": output})
+
+    return jsonify({"error": "cannot perform that function!"}), 403
+
 
 
 
