@@ -26,13 +26,13 @@ class _CartScreenState extends State<CartScreen> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          color: Colors.black,
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        //   color: Colors.black,
+        // ),
         elevation: 0,
       ),
       body: Column(

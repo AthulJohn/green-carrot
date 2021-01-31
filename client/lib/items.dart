@@ -7,6 +7,7 @@ List<int> recent = [12, 8, 2, 0, 1, 4, 7];
 List<int> latest = [7, 8, 9, 10, 11, 12];
 List<int> discover = [10, 11, 5, 9, 2, 1, 6];
 
+int navval = 0;
 void assign(String cls) {
   if (cls == '["classA"]') {
     discover = [10, 11, 3, 4, 1];

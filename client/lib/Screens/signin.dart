@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 //other files
+import 'package:markus/Screens/Survey/intro.dart';
+import 'package:markus/to_Database/dbMethods.dart';
 import 'package:markus/values.dart';
 
 //packages
@@ -20,6 +22,8 @@ class _SigninState extends State<Signin> {
   void _signin() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      user.signupuser(_name, _email, _username, _password);
+
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) {
           return Intro();

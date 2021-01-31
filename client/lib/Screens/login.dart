@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:markus/Objects/user.dart';
+import 'package:markus/to_Database/dbMethods.dart';
 import 'package:markus/values.dart';
 
 class Login extends StatefulWidget {
@@ -10,6 +11,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   void _login() {
     print('check 1');
+    user.loginuser(_email, _password);
     Navigator.pop(context);
   }
 
